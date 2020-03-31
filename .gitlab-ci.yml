@@ -25,7 +25,7 @@ deploy:chart:
   stage: deploy
   image: docker-registry.funix.nl/library/ci-runner:$RUNNER_VERSION
   script:
-    - curl -s -X POST -F token=$GITLAB_TOKEN -F ref=master https://gitlab.funix.nl/api/v4/projects/149/trigger/pipeline
+    - curl -s -X POST -F token=$HELM_CHARTS_TRIGGER_TOKEN -F ref=master https://gitlab.funix.nl/api/v4/projects/149/trigger/pipeline
   only:
     refs:
       - master
