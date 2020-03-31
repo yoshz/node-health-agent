@@ -11,7 +11,7 @@ hostPort: 8991
 image:
   repository: docker-registry.funix.nl
   name: operations/node-health-agent
-  tag: latest
+  tag: 0.1.1
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
