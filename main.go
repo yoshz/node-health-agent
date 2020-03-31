@@ -59,6 +59,7 @@ func main() {
 	incluster := flag.Bool("incluster", false, "use incluster config")
 	addr := flag.String("addr", ":8991", "Address to listen on")
 	nodeName := flag.String("node", os.Getenv("NODE_NAME"), "(optional) node name to check")
+	sickCode := flag.Int("sick-code", 404, "response code used when node is sick")
 	flag.Parse()
 
 	// load kubeconfig
@@ -97,8 +98,8 @@ func main() {
 		// get node details from apiserver
 		node, err := clientset.CoreV1().Nodes().Get(host, metav1.GetOptions{})
 		if errors.IsNotFound(err) {
-			error := fmt.Sprintf("Node not found: %s", host)
-			http.Error(w, error, 404)
+			error := fmt.Sprintf("Unknown node: %s", host)
+			http.Error(w, error, 400)
 			return
 		}
 		if err != nil {
@@ -111,9 +112,9 @@ func main() {
 		if (healthy) {
 			fmt.Fprintf(w, "Node is healthy: %s\n", node.Name)
 		} else {
-			error := fmt.Sprintf("Node is NOT healthy: %s", node.Name)
+			error := fmt.Sprintf("Node is SICK: %s", node.Name)
 			log.Println(error)
-			http.Error(w, error, http.StatusInternalServerError)
+			http.Error(w, error, *sickCode)
 		}
 	})
 
