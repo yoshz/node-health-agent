@@ -23,19 +23,19 @@ kubectx of
 go run main.go
 
 # get current health for node
-curl -i localhost:8090/?host=of-kube-gen-001.funix.nl
+curl -i localhost:8991/?host=of-kube-gen-001.funix.nl
 
 # cordon node
 kubectl cordon of-kube-gen-001.funix.nl
 
 # health check returns 500
-curl -i localhost:8090/?host=of-kube-gen-001.funix.nl
+curl -i localhost:8991/?host=of-kube-gen-001.funix.nl
 
 # uncordon node
 kubectl uncordon of-kube-gen-001.funix.nl
 
 # health check returns 200 again
-curl -i localhost:8090/?host=of-kube-gen-001.funix.nl
+curl -i localhost:8991/?host=of-kube-gen-001.funix.nl
 ```
 
 ## Build

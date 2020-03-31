@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"flag"
+	"log"
 	"net"
 	"net/http"
 	"os"
@@ -48,6 +49,7 @@ func checkNodeHealth(node *v1.Node) (bool) {
 }
 
 func main() {
+	// parse arguments
 	var kubeconfig *string
 	if home := os.Getenv("HOME"); home != "" {
 		kubeconfig = flag.String("kubeconfig", filepath.Join(home, ".kube", "config"), "(optional) absolute path to the kubeconfig file")
@@ -55,8 +57,11 @@ func main() {
 		kubeconfig = flag.String("kubeconfig", "", "absolute path to the kubeconfig file")
 	}
 	incluster := flag.Bool("incluster", false, "use incluster config")
+	addr := flag.String("addr", ":8991", "Address to listen on")
+	nodeName := flag.String("node", os.Getenv("NODE_NAME"), "(optional) node name to check")
 	flag.Parse()
 
+	// load kubeconfig
 	var config *rest.Config
 	var err error
 	if *incluster {
@@ -74,16 +79,25 @@ func main() {
 		panic(err.Error())
 	}
 
+	http.HandleFunc("/healthz", func(w http.ResponseWriter, req *http.Request) {
+	})
+
 	http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
-		hostname := req.URL.Query()["host"]
-		if len(hostname) != 1 {
+		// determine host to check
+		host := *nodeName
+		hostParam := req.URL.Query()["host"]
+		if len(hostParam) == 1 {
+			host = hostParam[0]
+		}
+		if host == "" {
 			http.Error(w, "Missing \"host\" parameter", 400)
 			return
 		}
 
-		node, err := clientset.CoreV1().Nodes().Get(hostname[0], metav1.GetOptions{})
+		// get node details from apiserver
+		node, err := clientset.CoreV1().Nodes().Get(host, metav1.GetOptions{})
 		if errors.IsNotFound(err) {
-			error := fmt.Sprintf("Node not found: %s", hostname[0])
+			error := fmt.Sprintf("Node not found: %s", host)
 			http.Error(w, error, 404)
 			return
 		}
@@ -92,14 +106,17 @@ func main() {
 			return
 		}
 
+		// verify if node is healthy
 		healthy := checkNodeHealth(node)
 		if (healthy) {
 			fmt.Fprintf(w, "Node is healthy: %s\n", node.Name)
 		} else {
 			error := fmt.Sprintf("Node is NOT healthy: %s", node.Name)
+			log.Println(error)
 			http.Error(w, error, http.StatusInternalServerError)
 		}
 	})
 
-	http.ListenAndServe(":8090", nil)
+	log.Println("listen on", *addr)
+	http.ListenAndServe(*addr, nil)
 }
