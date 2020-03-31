@@ -5,6 +5,7 @@ services:
 
 stages:
   - build
+  - deploy
 
 build:
   stage: build
@@ -20,3 +21,11 @@ build:
     fi
   only:
     - tags
+
+deploy:chart:
+  stage: deploy
+  script:
+    - curl -s -X POST -F token=$GITLAB_TOKEN -F ref=master https://gitlab.funix.nl/api/v4/projects/149/trigger/pipeline
+  only:
+    refs:
+      - master
