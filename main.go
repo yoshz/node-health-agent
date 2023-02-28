@@ -104,7 +104,8 @@ func main() {
 			return
 		}
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			error := fmt.Sprintf("Temporary API error: %s\n", err.Error())
+			http.Error(w, error, 202)
 			return
 		}
 
