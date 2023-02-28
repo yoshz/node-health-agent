@@ -6,15 +6,21 @@ When deployed as an DaemonSet it can be used as health check endpoint in your lo
 
 For example when you (cordon) taint a node unhealthy, the health endpoint will return unhealthy and the node is not used by the load balancer anymore.
 
-## Installation
+# Installation
 
 ```bash
 helm repo add node-health-agent https://yoshz.github.io/node-health-agent/
 helm install --namespace kube-system node-health-agent node-health-agent/node-health-agent
 ```
+
+# Development
+
 ## Usage
 
 ```bash
+# install dependencies
+go get
+
 # start server
 go run main.go --kubeconfig $KUBECONFIG
 
