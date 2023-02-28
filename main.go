@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"time"
 
 	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
@@ -74,6 +75,9 @@ func main() {
 	if err != nil {
 		panic(err.Error())
 	}
+
+	// set timeout to 1 second
+	config.Timeout, _ = time.ParseDuration("1s")
 
 	// create the clientset
 	clientset, err := kubernetes.NewForConfig(config)
