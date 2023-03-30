@@ -2,12 +2,21 @@ apiVersion: v1
 entries:
   node-health-agent:
   - apiVersion: v2
+    appVersion: 0.2.0
+    created: "2023-03-30T11:52:04.064180158+02:00"
+    description: Node Health Agent
+    digest: a95dd3c278f2216e2bd6fd77cf5a6d0a43d6c2c58446b9def06ce24a3b0d583b
+    name: node-health-agent
+    urls:
+    - https://yoshz.github.io/node-health-agent/node-health-agent-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
     appVersion: 0.1.0
-    created: "2022-08-05T15:25:07.407022094+02:00"
+    created: "2023-03-30T11:52:04.061758898+02:00"
     description: Node Health Agent
     digest: 3e64a7c27f07cc3c712f9453bb7a2da8cf12d7a64d08d202b22ea31d74e87af4
     name: node-health-agent
     urls:
     - https://yoshz.github.io/node-health-agent/node-health-agent-0.1.0.tgz
     version: 0.1.0
-generated: "2022-08-05T15:25:07.402776474+02:00"
+generated: "2023-03-30T11:52:04.058929223+02:00"
