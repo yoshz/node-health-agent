@@ -40,19 +40,18 @@ kubectl uncordon k8s-master-01
 curl -i localhost:8991/?host=k8s-master-01
 ```
 
-## Build
+## Build binary
 
-Build the binary locally:
 ```bash
 go build
 ```
 
-Build Docker image:
+## Build Docker image
 ```bash
 docker build -t yoshz/node-health-agent .
 ```
 
-Create Helm package:
+## Build Helm package
 ```
 helm package charts/node-health-agent
 git checkout gh-pages
