@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"time"
 
 	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
@@ -60,6 +61,7 @@ func main() {
 	incluster := flag.Bool("incluster", false, "use incluster config")
 	addr := flag.String("addr", ":8991", "Address to listen on")
 	nodeName := flag.String("node", os.Getenv("NODE_NAME"), "(optional) node name to check")
+	apiErrorCode := flag.Int("api-error-code", 200, "response code used when the API respond with an error")
 	sickCode := flag.Int("sick-code", 404, "response code used when node is sick")
 	flag.Parse()
 
@@ -107,8 +109,8 @@ func main() {
 			return
 		}
 		if err != nil {
-			error := fmt.Sprintf("Temporary API error: %s\n", err.Error())
-			http.Error(w, error, 202)
+			error := fmt.Sprintf("API error: %s\n", err.Error())
+			http.Error(w, error, *apiErrorCode)
 			return
 		}
 
