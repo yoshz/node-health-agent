@@ -1,5 +1,5 @@
 apiVersion: v2
-appVersion: 0.3.0
+appVersion: 0.4.0
 description: Node Health Agent
 name: node-health-agent
-version: 0.3.0
+version: 0.4.0
