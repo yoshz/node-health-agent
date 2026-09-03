@@ -4,7 +4,7 @@ ADD . /build/
 WORKDIR /build
 RUN go build
 
-FROM alpine:3.21
+FROM alpine:3.24
 RUN adduser -S -D -H agent
 COPY --from=builder /build/node-health-agent /usr/local/bin
 USER agent
