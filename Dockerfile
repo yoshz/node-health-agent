@@ -1,10 +1,10 @@
-FROM golang:alpine as builder
+FROM golang:1.26-alpine AS builder
 RUN mkdir /build
 ADD . /build/
 WORKDIR /build
 RUN go build
 
-FROM alpine
+FROM alpine:3.21
 RUN adduser -S -D -H agent
 COPY --from=builder /build/node-health-agent /usr/local/bin
 USER agent

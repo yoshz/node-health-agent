@@ -48,13 +48,5 @@ go build
 
 ## Build Docker image
 ```bash
-docker build -t yoshz/node-health-agent .
+docker build -t ghcr.io/yoshz/node-health-agent .
 ```
-
-## Build Helm package
-```
-helm package charts/node-health-agent
-git checkout gh-pages
-helm repo index . --url https://yoshz.github.io/node-health-agent/
-```
-

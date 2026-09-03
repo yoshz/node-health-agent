@@ -9,7 +9,7 @@ containerPort: 8991
 hostPort: 8991
 
 image:
-  name: yoshz/node-health-agent
+  name: ghcr.io/yoshz/node-health-agent
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
